@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CODE ALPHA — Futuristic Holographic Calculation System</title>
+  <meta name="description"
+    content="A next-generation 3D holographic calculator experience engineered for 2077. Featuring Web Audio synthesized soundscapes, real-time live preview, glassmorphism, and responsive 3D tilt.">
+  <meta name="keywords"
+    content="holographic calculator, 3d calculator, cyberpunk calculator, code alpha, futuristic web app">
+  <meta name="theme-color" content="#030712">
+
+  <!-- Google Fonts: Orbitron, Rajdhani, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body data-theme="cyan">
+  <!-- Interactive Cyber Background Elements -->
+  <canvas id="cyber-canvas" class="cyber-canvas" aria-hidden="true"></canvas>
+  <div class="perspective-grid-floor" aria-hidden="true"></div>
+  <div class="hologram-ambient-light" aria-hidden="true"></div>
+
+  <!-- Main Viewport Wrap with 3D Perspective -->
+  <main class="viewport-wrap" id="viewport-wrap">
+
+    <!-- 3D Hologram Projection Base Emitter -->
+    <div class="holo-projector-beam" aria-hidden="true"></div>
+    <div class="holo-emitter-ring" aria-hidden="true">
+      <div class="ring-pulse"></div>
+      <div class="ring-core"></div>
+    </div>
+
+    <!-- The 3D Floating Calculator Container -->
+    <div class="calc-3d-stage" id="calc-stage">
+      <div class="calc-card" id="calc-card" role="region" aria-label="CODE ALPHA Calculator">
+
+        <!-- Hologram Light Sheen & Scan Lines -->
+        <div class="card-glass-reflection" aria-hidden="true"></div>
+        <div class="card-scanlines" aria-hidden="true"></div>
+        <div class="card-hud-corner tl" aria-hidden="true"></div>
+        <div class="card-hud-corner tr" aria-hidden="true"></div>
+        <div class="card-hud-corner bl" aria-hidden="true"></div>
+        <div class="card-hud-corner br" aria-hidden="true"></div>
+
+        <!-- Calculator Header -->
+        <header class="calc-header">
+          <div class="brand-group">
+            <div class="brand-logo">
+              <svg viewBox="0 0 24 24" fill="none" class="brand-glyph" aria-hidden="true">
+                <polygon points="12,2 22,21 17,21 12,10 7,21 2,21" stroke="currentColor" stroke-width="1.8"
+                  stroke-linejoin="round" />
+                <line x1="6.5" y1="15.5" x2="17.5" y2="15.5" stroke="currentColor" stroke-width="1.5" />
+                <circle cx="12" cy="7" r="1.8" fill="currentColor" />
+              </svg>
+            </div>
+            <div class="brand-text">
+              <h1 class="brand-title">CODE <span class="brand-accent">ALPHA</span></h1>
+              <p class="brand-subtitle">HOLOGRAPHIC CALCULATION SYSTEM</p>
+            </div>
+          </div>
+
+          <div class="header-controls">
+            <!-- System Status Indicator -->
+            <div class="status-indicator" id="status-indicator" title="System Status: Ready" role="status">
+              <span class="status-dot"></span>
+              <span class="status-text">SYSTEM ONLINE</span>
+            </div>
+
+            <!-- Sound Toggle Button -->
+            <button id="btn-sound-toggle" class="icon-hud-btn" type="button"
+              aria-label="Toggle synthesized audio effects" title="Audio Synthesizer (Muted)">
+              <svg class="icon-svg icon-sound-off" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <line x1="23" y1="9" x2="17" y2="15"></line>
+                <line x1="17" y1="9" x2="23" y2="15"></line>
+              </svg>
+              <svg class="icon-svg icon-sound-on hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              </svg>
+            </button>
+
+            <!-- Theme Picker Toggle Button -->
+            <button id="btn-theme-toggle" class="icon-hud-btn" type="button"
+              aria-label="Cycle holographic spectrum palette" title="Change Hologram Spectrum">
+              <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="5"></circle>
+                <path
+                  d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42">
+                </path>
+              </svg>
+            </button>
+
+            <!-- History Toggle Button -->
+            <button id="btn-history-toggle" class="icon-hud-btn" type="button" aria-label="Open calculation history log"
+              title="Telemetry & History Log">
+              <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </button>
+          </div>
+        </header>
+
+        <!-- Futuristic Holographic Display Screen -->
+        <section class="calc-display-section" aria-label="Calculation Screen">
+          <div class="display-glass" id="display-glass">
+            <div class="display-scanline-beam"></div>
+
+            <!-- Top HUD Meta Row -->
+            <div class="display-meta-row">
+              <span class="meta-mode">MODE: FLOAT-64</span>
+              <span class="meta-calc-active" id="calc-state-tag">READY</span>
+              <!-- Copy Result Action -->
+              <button id="btn-copy-result" class="meta-copy-btn" type="button" title="Copy result to clipboard"
+                aria-label="Copy result">
+                <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span class="copy-label">COPY</span>
+              </button>
+            </div>
+
+            <!-- Active Math Expression -->
+            <div class="display-expression-wrap">
+              <div class="display-expression" id="display-expression" aria-label="Expression history"
+                title="Current Expression"></div>
+            </div>
+
+            <!-- Prominent Primary Result / Entry Line -->
+            <div class="display-main-wrap">
+              <div class="display-main" id="display-main" role="textbox" aria-readonly="true"
+                aria-label="Current Value">0</div>
+            </div>
+
+            <!-- Intelligent Live Result Preview -->
+            <div class="display-preview-wrap">
+              <span class="preview-equal-sign" id="preview-equal" aria-hidden="true">=</span>
+              <span class="display-preview" id="display-preview" aria-live="polite"
+                aria-label="Live preview result"></span>
+            </div>
+
+            <!-- Screen Bottom Status Ribbon -->
+            <div class="display-bottom-ribbon">
+              <span class="ribbon-unit">RAD // PRECISION 1e-12</span>
+              <div class="display-activity-bar" id="activity-bar"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Extended Sci-Fi Quick Memory / Sci Bar -->
+        <div class="calc-sci-bar" role="toolbar" aria-label="Memory and Scientific Quick Actions">
+          <button class="sci-btn" data-action="sqrt" type="button" title="Square root (√)">√x</button>
+          <button class="sci-btn" data-action="sq" type="button" title="Square (x²)">x²</button>
+          <button class="sci-btn" data-action="reciprocal" type="button" title="Reciprocal (1/x)">1/x</button>
+          <button class="sci-btn" data-action="pi" type="button" title="Constant Pi (π)">π</button>
+          <button class="sci-btn" data-action="mc" type="button" title="Memory Clear">MC</button>
+          <button class="sci-btn" data-action="mr" type="button" title="Memory Recall">MR</button>
+          <button class="sci-btn" data-action="mplus" type="button" title="Memory Add">M+</button>
+        </div>
+
+        <!-- 4-Column Primary Calculator Button Grid -->
+        <div class="calc-keypad" id="calc-keypad" role="grid" aria-label="Calculator keypad">
+          <!-- Row 1 -->
+          <button type="button" class="key-btn key-danger key-ac" data-action="clear" data-key="Escape" id="key-ac"
+            aria-label="All Clear (Escape)">
+            <span class="key-label">AC</span>
+            <span class="key-glow-reflection"></span>
+          </button>
+          <button type="button" class="key-btn key-danger key-del" data-action="delete" data-key="Backspace"
+            id="key-del" aria-label="Delete last character (Backspace)">
+            <span class="key-label">DEL</span>
+            <span class="key-glow-reflection"></span>
+          </button>
+          <button type="button" class="key-btn key-operator key-percent" data-action="percent" data-key="%"
+            id="key-percent" aria-label="Percent (%)">
+            <span class="key-label">%</span>
+            <span class="key-glow-reflection"></span>
+          </button>
+          <button type="button" class="key-btn key-operator key-divide" data-action="operator" data-val="/" data-key="/"
+            id="key-divide" aria-label="Divide (÷)">
+            <span class="key-label">÷</span>
+            <span class="key-glow-reflection"></span>
+          </button>
+
+          <!-- Row 2 -->
+          <button type="button" class="key-btn key-num" data-num="7" data-key="7" id="key-7" aria-label="7">
+            <span class="key-label">7</span>
+            <span class="key-glow-reflection"></span>
+          </button>
+          <button type="button" class="key-btn key-num" data-num="8" data-key="8" id="key-8" aria-label="8">
+            <span class="key-label">8</span>
+            <span class="key-glow-reflection"></span>
+          </button>
+          <button type="button" class="key-btn key-num" data-num="9" data-key="9" id="key-9" aria-label="9">
+            <span class="key-label">9</span>
+            <span class="key-glow-reflection"></span>
+          </button>
+          <button type="button" class="key-btn key-operator key-multiply" data-action="operator" data-val="*"
+            data-key="*" id="key-multiply" aria-label="Multiply (×)">
+            <span class="key-label">×</span>
+            <span class="key-glow-reflection"></span>
+          </button>
+
+          <!-- Row 3 -->
+          <button type="button" class="key-btn key-num" data-num="4" data-key="4" id="key-4" aria-label="4">
+            <span class="key-label">4</span>
+            <span class="key-glow-reflection"></span>
+          </button>
+          <button type="button" class="key-btn key-num" data-num="5" data-key="5" id="key-5" aria-label="5">
+            <span class="key-label">5</span>
+            <span class="key-glow-reflection"></span>
+          </button>
+          <button type="button" class="key-btn key-num" data-num="6" data-key="6" id="key-6" aria-label="6">
+            <span class="key-label">6</span>
+            <span class="key-glow-reflection"></span>
+          </button>
+          <button type="button" class="key-btn key-operator key-subtract" data-action="operator" data-val="-"
+            data-key="-" id="key-subtract" aria-label="Subtract (−)">
+            <span class="key-label">−</span>
+            <span class="key-glow-reflection"></span>
+          </button>
+
+          <!-- Row 4 -->
+          <button type="button" class="key-btn key-num" data-num="1" data-key="1" id="key-1" aria-label="1">
+            <span class="key-label">1</span>
+            <span class="key-glow-reflection"></span>
+          </button>
+          <button type="button" class="key-btn key-num" data-num="2" data-key="2" id="key-2" aria-label="2">
+            <span class="key-label">2</span>
+            <span class="key-glow-reflection"></span>
+          </button>
+          <button type="button" class="key-btn key-num" data-num="3" data-key="3" id="key-3" aria-label="3">
+            <span class="key-label">3</span>
+            <span class="key-glow-reflection"></span>
+          </button>
+          <button type="button" class="key-btn key-operator key-add" data-action="operator" data-val="+" data-key="+"
+            id="key-add" aria-label="Add (+)">
+            <span class="key-label">+</span>
+            <span class="key-glow-reflection"></span>
+          </button>
+
+          <!-- Row 5 -->
+          <button type="button" class="key-btn key-fn key-negate" data-action="negate" data-key="±" id="key-negate"
+            aria-label="Positive / Negative toggle (±)">
+            <span class="key-label">±</span>
+            <span class="key-glow-reflection"></span>
+          </button>
+          <button type="button" class="key-btn key-num" data-num="0" data-key="0" id="key-0" aria-label="0">
+            <span class="key-label">0</span>
+            <span class="key-glow-reflection"></span>
+          </button>
+          <button type="button" class="key-btn key-num key-decimal" data-action="decimal" data-key="." id="key-decimal"
+            aria-label="Decimal point (.)">
+            <span class="key-label">.</span>
+            <span class="key-glow-reflection"></span>
+          </button>
+          <button type="button" class="key-btn key-equals" data-action="calculate" data-key="Enter" id="key-equals"
+            aria-label="Calculate result (Enter)">
+            <span class="key-label">=</span>
+            <span class="key-pulse-ring"></span>
+            <span class="key-glow-reflection"></span>
+          </button>
+        </div>
+
+        <!-- Calculator Footer -->
+        <footer class="calc-footer">
+          <div class="footer-status-line">
+            <span class="footer-chip">CODE ALPHA-OS // KERNEL v9.8.4</span>
+            <span class="footer-chip tag-secure">HOLO-PROJ SECURE</span>
+          </div>
+          <p class="footer-tagline">ENGINEERED BY CODE ALPHA</p>
+        </footer>
+
+      </div> <!-- /calc-card -->
+    </div> <!-- /calc-3d-stage -->
+
+    <!-- Holographic Telemetry & History Slide-Out Drawer -->
+    <aside class="history-drawer" id="history-drawer" aria-hidden="true" role="dialog"
+      aria-label="Calculation History Log">
+      <div class="drawer-header">
+        <div class="drawer-title-wrap">
+          <span class="drawer-icon">◈</span>
+          <h2 class="drawer-title">CHRONO LOGS</h2>
+        </div>
+        <div class="drawer-actions">
+          <button id="btn-clear-history" class="drawer-btn" type="button" title="Purge calculation logs">PURGE</button>
+          <button id="btn-close-history" class="drawer-close-btn" type="button"
+            aria-label="Close history drawer">✕</button>
+        </div>
+      </div>
+
+      <div class="history-list" id="history-list" role="list">
+        <!-- Injected dynamically via script.js -->
+        <div class="history-empty">
+          <div class="empty-icon">⏣</div>
+          <p>NO TELEMETRY LOGGED</p>
+          <span class="empty-hint">Perform operations to register chronological records</span>
+        </div>
+      </div>
+
+      <div class="drawer-footer">
+        <span class="storage-tag">LOCAL LOGS CACHED</span>
+      </div>
+    </aside>
+
+    <!-- Spectrum Palette Switcher Modal / Dropdown -->
+    <div class="theme-palette-modal" id="theme-modal" aria-hidden="true" role="dialog"
+      aria-label="Spectrum Theme Selection">
+      <div class="palette-header">
+        <h3 class="palette-title">SPECTRAL MATRIX</h3>
+        <button id="btn-close-theme" class="palette-close-btn" type="button"
+          aria-label="Close spectrum modal">✕</button>
+      </div>
+      <div class="palette-grid">
+        <button class="palette-chip active" data-set-theme="cyan" type="button">
+          <span class="palette-swatch swatch-cyan"></span>
+          <span class="palette-name">CYBER CYAN</span>
+        </button>
+        <button class="palette-chip" data-set-theme="magenta" type="button">
+          <span class="palette-swatch swatch-magenta"></span>
+          <span class="palette-name">NEON MAGENTA</span>
+        </button>
+        <button class="palette-chip" data-set-theme="purple" type="button">
+          <span class="palette-swatch swatch-purple"></span>
+          <span class="palette-name">SYNTH PURPLE</span>
+        </button>
+        <button class="palette-chip" data-set-theme="matrix" type="button">
+          <span class="palette-swatch swatch-matrix"></span>
+          <span class="palette-name">MATRIX GREEN</span>
+        </button>
+        <button class="palette-chip" data-set-theme="solar" type="button">
+          <span class="palette-swatch swatch-solar"></span>
+          <span class="palette-name">SOLAR AMBER</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Toast Notification for System Events (Copy, Reset, Errors) -->
+    <div class="cyber-toast" id="cyber-toast" role="status" aria-live="polite">
+      <span class="toast-dot"></span>
+      <span class="toast-message" id="toast-text">SYSTEM SYNCHRONIZED</span>
+    </div>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
